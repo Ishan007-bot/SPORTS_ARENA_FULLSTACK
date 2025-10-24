@@ -1,0 +1,337 @@
+.chess-arena {
+  min-height: 100vh;
+  padding: 2rem 0;
+  position: relative;
+}
+
+.chess-arena-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.arena-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.arena-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 2rem;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(45deg, #2c3e50, #34495e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.match-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.players {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.vs {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+}
+
+.match-status {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.match-status.scheduled {
+  background: rgba(52, 152, 219, 0.2);
+  color: #3498db;
+  border: 1px solid rgba(52, 152, 219, 0.3);
+}
+
+.match-status.live {
+  background: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  animation: pulse 2s infinite;
+}
+
+.chess-scoreboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.score-display {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.clocks {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.clock {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.clock.active {
+  background: rgba(52, 152, 219, 0.2);
+  border-color: rgba(52, 152, 219, 0.5);
+  box-shadow: 0 0 20px rgba(52, 152, 219, 0.3);
+}
+
+.player-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.time {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #ffd700;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.result {
+  padding: 1rem;
+  background: rgba(46, 204, 113, 0.2);
+  border: 1px solid rgba(46, 204, 113, 0.3);
+  border-radius: 12px;
+  margin-top: 1rem;
+}
+
+.result-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #2ecc71;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.scorer-controls {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+}
+
+.scorer-controls h3 {
+  color: #fff;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.result-section,
+.clock-section {
+  margin-bottom: 2rem;
+}
+
+.result-buttons {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+.clock-buttons {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+}
+
+.result-btn {
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.result-btn.white-win {
+  background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
+  color: #2c3e50;
+}
+
+.result-btn.white-win:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(236, 240, 241, 0.3);
+}
+
+.result-btn.black-win {
+  background: linear-gradient(135deg, #2c3e50, #34495e);
+  color: #fff;
+}
+
+.result-btn.black-win:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(44, 62, 80, 0.3);
+}
+
+.result-btn.draw {
+  background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+  color: #fff;
+}
+
+.result-btn.draw:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(149, 165, 166, 0.3);
+}
+
+.clock-btn {
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.clock-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(52, 152, 219, 0.3);
+}
+
+.actions-section {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 120px;
+}
+
+.action-btn.start {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  color: #fff;
+}
+
+.action-btn.start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(39, 174, 96, 0.3);
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .chess-arena {
+    padding: 1rem 0;
+  }
+
+  .chess-arena-container {
+    padding: 0 15px;
+  }
+
+  .arena-title {
+    font-size: 2.5rem;
+  }
+
+  .match-info {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .chess-scoreboard {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .time {
+    font-size: 1.5rem;
+  }
+
+  .actions-section {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .arena-title {
+    font-size: 2rem;
+  }
+
+  .time {
+    font-size: 1.2rem;
+  }
+
+  .result-btn,
+  .clock-btn {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  .action-btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}

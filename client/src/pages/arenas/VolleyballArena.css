@@ -1,0 +1,299 @@
+.volleyball-arena {
+  min-height: 100vh;
+  padding: 2rem 0;
+  position: relative;
+}
+
+.volleyball-arena-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.arena-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.arena-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 2rem;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(45deg, #9b59b6, #8e44ad);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.match-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.teams {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.vs {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 700;
+}
+
+.match-status {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.match-status.scheduled {
+  background: rgba(52, 152, 219, 0.2);
+  color: #3498db;
+  border: 1px solid rgba(52, 152, 219, 0.3);
+}
+
+.match-status.live {
+  background: rgba(231, 76, 60, 0.2);
+  color: #e74c3c;
+  border: 1px solid rgba(231, 76, 60, 0.3);
+  animation: pulse 2s infinite;
+}
+
+.volleyball-scoreboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.score-display {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+}
+
+.main-score {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.team-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.team-name {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.points {
+  font-size: 4rem;
+  font-weight: 800;
+  color: #ffd700;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.sets {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+}
+
+.separator {
+  font-size: 3rem;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 300;
+}
+
+.set-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.current-set {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.serving {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+}
+
+.scorer-controls {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+}
+
+.scorer-controls h3 {
+  color: #fff;
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.points-section {
+  margin-bottom: 2rem;
+}
+
+.points-buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+}
+
+.score-btn {
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background: linear-gradient(135deg, #9b59b6, #8e44ad);
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.score-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(155, 89, 182, 0.3);
+}
+
+.actions-section {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 1;
+  min-width: 120px;
+}
+
+.action-btn.start {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  color: #fff;
+}
+
+.action-btn.start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(39, 174, 96, 0.3);
+}
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .volleyball-arena {
+    padding: 1rem 0;
+  }
+
+  .volleyball-arena-container {
+    padding: 0 15px;
+  }
+
+  .arena-title {
+    font-size: 2.5rem;
+  }
+
+  .match-info {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .volleyball-scoreboard {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .points {
+    font-size: 3rem;
+  }
+
+  .points-buttons {
+    grid-template-columns: 1fr;
+  }
+
+  .actions-section {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 480px) {
+  .arena-title {
+    font-size: 2rem;
+  }
+
+  .points {
+    font-size: 2.5rem;
+  }
+
+  .score-btn {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+
+  .action-btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+}
