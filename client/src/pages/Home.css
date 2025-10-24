@@ -77,12 +77,14 @@
   min-height: 280px;
 }
 
+
 .sport-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-12px);
+  border-color: rgba(102, 126, 234, 0.4);
   box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(142, 68, 173, 0.3);
-  border-color: rgba(142, 68, 173, 0.5);
+    0 25px 50px rgba(102, 126, 234, 0.3),
+    0 0 30px rgba(102, 126, 234, 0.4),
+    0 0 60px rgba(102, 126, 234, 0.2);
 }
 
 .sport-card-header {
@@ -107,11 +109,18 @@
 }
 
 .sport-icon {
-  font-size: 3rem;
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
   z-index: 1;
   position: relative;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-  text-shadow: 0 0 10px rgba(142, 68, 173, 0.5);
+  transition: all 0.3s ease;
+}
+
+.sport-card:hover .sport-icon {
+  transform: scale(1.1);
+  filter: drop-shadow(0 6px 12px rgba(102, 126, 234, 0.4));
 }
 
 .sport-card-content {
@@ -172,6 +181,45 @@
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
   border-color: rgba(142, 68, 173, 0.6);
   background: rgba(142, 68, 173, 0.3);
+}
+
+.scrolling-section {
+  margin: 4rem 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.scrolling-container {
+  width: 100%;
+  overflow: hidden;
+  background: rgba(44, 62, 80, 0.3);
+  border-radius: 15px;
+  padding: 20px 0;
+  border: 1px solid rgba(142, 68, 173, 0.2);
+}
+
+.scrolling-content {
+  display: flex;
+  animation: scroll 20s linear infinite;
+  gap: 2rem;
+  align-items: center;
+}
+
+.scrolling-icon {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
+  flex-shrink: 0;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
 .features-section {
@@ -273,6 +321,23 @@
     padding: 1.5rem;
   }
 
+  .scrolling-section {
+    margin: 3rem 0;
+  }
+  
+  .scrolling-container {
+    padding: 15px 0;
+  }
+  
+  .scrolling-icon {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .scrolling-content {
+    gap: 1.5rem;
+  }
+
   .why-choose-image {
     max-width: 65%;
     margin-bottom: 2rem;
@@ -299,6 +364,23 @@
 
   .hero-description {
     font-size: 0.9rem;
+  }
+
+  .scrolling-section {
+    margin: 2rem 0;
+  }
+  
+  .scrolling-container {
+    padding: 10px 0;
+  }
+  
+  .scrolling-icon {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .scrolling-content {
+    gap: 1rem;
   }
 
   .sport-card-content {

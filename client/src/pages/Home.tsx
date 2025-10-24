@@ -9,43 +9,43 @@ const Home: React.FC = () => {
       id: 'cricket',
       name: 'Cricket',
       description: 'Live cricket scoring and player statistics',
-      icon: '🏏'
+      icon: '/cricket-icon.png'
     },
     {
       id: 'football',
       name: 'Football',
       description: 'Real-time football match updates',
-      icon: '⚽'
+      icon: '/football-icon.png'
     },
     {
       id: 'basketball',
       name: 'Basketball',
       description: 'Basketball game statistics and live scores',
-      icon: '🏀'
+      icon: '/basketball-icon.png'
     },
     {
       id: 'volleyball',
       name: 'Volleyball',
       description: 'Volleyball match tracking and scoring',
-      icon: '🏐'
+      icon: '/volleyball-icon.png'
     },
     {
       id: 'table-tennis',
       name: 'Table Tennis',
       description: 'Ping pong scoring and tournament management',
-      icon: '🏓'
+      icon: '/table-tennis-icon.png'
     },
     {
       id: 'chess',
       name: 'Chess',
       description: 'Chess tournament scoring and rankings',
-      icon: '♟️'
+      icon: '/chess-icon.png'
     },
     {
       id: 'badminton',
       name: 'Badminton',
       description: 'Badminton match tracking and scoring',
-      icon: '🏸'
+      icon: '/badminton-icon.png'
     }
   ];
 
@@ -115,7 +115,7 @@ const Home: React.FC = () => {
               whileTap={{ scale: 0.95 }}
             >
               <div className="sport-card-header">
-                <div className="sport-icon">{sport.icon}</div>
+                <img src={sport.icon} alt={sport.name} className="sport-icon" />
               </div>
               <div className="sport-card-content">
                 <h3 className="sport-name">{sport.name}</h3>
@@ -129,6 +129,32 @@ const Home: React.FC = () => {
               </div>
             </motion.div>
           ))}
+        </motion.div>
+
+        <motion.div 
+          className="scrolling-section"
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+        >
+          <div className="scrolling-container">
+            <div className="scrolling-content">
+              <img src="/cricket-icon.png" alt="Cricket" className="scrolling-icon" />
+              <img src="/football-icon.png" alt="Football" className="scrolling-icon" />
+              <img src="/basketball-icon.png" alt="Basketball" className="scrolling-icon" />
+              <img src="/volleyball-icon.png" alt="Volleyball" className="scrolling-icon" />
+              <img src="/table-tennis-icon.png" alt="Table Tennis" className="scrolling-icon" />
+              <img src="/chess-icon.png" alt="Chess" className="scrolling-icon" />
+              <img src="/badminton-icon.png" alt="Badminton" className="scrolling-icon" />
+              <img src="/cricket-icon.png" alt="Cricket" className="scrolling-icon" />
+              <img src="/football-icon.png" alt="Football" className="scrolling-icon" />
+              <img src="/basketball-icon.png" alt="Basketball" className="scrolling-icon" />
+              <img src="/volleyball-icon.png" alt="Volleyball" className="scrolling-icon" />
+              <img src="/table-tennis-icon.png" alt="Table Tennis" className="scrolling-icon" />
+              <img src="/chess-icon.png" alt="Chess" className="scrolling-icon" />
+              <img src="/badminton-icon.png" alt="Badminton" className="scrolling-icon" />
+            </div>
+          </div>
         </motion.div>
 
         <motion.div 

@@ -49,12 +49,14 @@
   min-height: 280px;
 }
 
+
 .sport-card:hover {
-  transform: translateY(-8px);
+  transform: translateY(-12px);
+  border-color: rgba(102, 126, 234, 0.4);
   box-shadow: 
-    0 20px 40px rgba(0, 0, 0, 0.4),
-    0 0 0 1px rgba(142, 68, 173, 0.3);
-  border-color: rgba(142, 68, 173, 0.5);
+    0 25px 50px rgba(102, 126, 234, 0.3),
+    0 0 30px rgba(102, 126, 234, 0.4),
+    0 0 60px rgba(102, 126, 234, 0.2);
 }
 
 .sport-card-header {
@@ -79,11 +81,18 @@
 }
 
 .sport-icon {
-  font-size: 3rem;
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
   z-index: 1;
   position: relative;
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-  text-shadow: 0 0 10px rgba(142, 68, 173, 0.5);
+  transition: all 0.3s ease;
+}
+
+.sport-card:hover .sport-icon {
+  transform: scale(1.1);
+  filter: drop-shadow(0 6px 12px rgba(102, 126, 234, 0.4));
 }
 
 .sport-card-content {
