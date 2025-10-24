@@ -95,9 +95,6 @@ const Sports: React.FC = () => {
           transition={{ duration: 0.6 }}
         >
           <h1 className="sports-title">Choose Your Sport</h1>
-          <p className="sports-description">
-            Select a sport to start scoring and tracking matches
-          </p>
         </motion.div>
 
         <motion.div 

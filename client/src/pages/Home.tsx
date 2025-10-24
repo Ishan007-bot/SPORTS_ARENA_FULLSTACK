@@ -99,7 +99,7 @@ const Home: React.FC = () => {
             <span className="hero-brand">Sports Arena</span>
           </h1>
           <p className="hero-description">
-            Your ultimate destination for live sports scoring and player statistics
+            SST's ultimate destination for live sports scoring and player statistics
           </p>
           <div className="hero-actions">
             <Link to="/sports" className="btn btn-primary">

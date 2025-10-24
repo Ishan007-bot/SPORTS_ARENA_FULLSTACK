@@ -20,7 +20,11 @@ const Navbar: React.FC = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          <span className="logo-text">SPORTS ARENA</span>
+          <img 
+            src="/sports-arena-logo.png" 
+            alt="Sports Arena" 
+            className="logo-image"
+          />
         </Link>
 
         <div className={`navbar-menu ${isMenuOpen ? 'active' : ''}`}>
