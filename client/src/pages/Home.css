@@ -1,6 +1,6 @@
 .home {
   min-height: 100vh;
-  padding: 2rem 0;
+  padding: 2rem 0 0 0;
   position: relative;
 }
 
@@ -206,10 +206,11 @@
 }
 
 .scrolling-icon {
-  width: 120px;
-  height: 120px;
-  object-fit: contain;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.4));
+  width: 180px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 15px;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
   flex-shrink: 0;
 }
 
@@ -225,6 +226,7 @@
 .features-section {
   text-align: center;
   margin-top: 4rem;
+  margin-bottom: 6rem;
 }
 
 .why-choose-image {
@@ -330,8 +332,9 @@
   }
   
   .scrolling-icon {
-    width: 100px;
-    height: 100px;
+    width: 150px;
+    height: 150px;
+    border-radius: 12px;
   }
   
   .scrolling-content {
@@ -375,8 +378,9 @@
   }
   
   .scrolling-icon {
-    width: 80px;
-    height: 80px;
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
   }
   
   .scrolling-content {

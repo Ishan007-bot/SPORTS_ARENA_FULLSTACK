@@ -23,3 +23,4 @@ router.post('/:id/players', auth, addPlayerToTeam);
 router.delete('/:id/players/:playerId', auth, removePlayerFromTeam);
 
 module.exports = router;
+

@@ -307,3 +307,4 @@ const Tournament: React.FC = () => {
 };
 
 export default Tournament;
+

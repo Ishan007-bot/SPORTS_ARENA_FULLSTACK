@@ -21,3 +21,4 @@ router.post('/:id/generate-matches', auth, generateMatches);
 router.put('/:id/status', auth, updateTournamentStatus);
 
 module.exports = router;
+

@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import Footer from '../components/Footer';
 import './Home.css';
 
 const Home: React.FC = () => {
@@ -139,20 +140,22 @@ const Home: React.FC = () => {
         >
           <div className="scrolling-container">
             <div className="scrolling-content">
-              <img src="/cricket-icon.png" alt="Cricket" className="scrolling-icon" />
-              <img src="/football-icon.png" alt="Football" className="scrolling-icon" />
-              <img src="/basketball-icon.png" alt="Basketball" className="scrolling-icon" />
-              <img src="/volleyball-icon.png" alt="Volleyball" className="scrolling-icon" />
-              <img src="/table-tennis-icon.png" alt="Table Tennis" className="scrolling-icon" />
-              <img src="/chess-icon.png" alt="Chess" className="scrolling-icon" />
-              <img src="/badminton-icon.png" alt="Badminton" className="scrolling-icon" />
-              <img src="/cricket-icon.png" alt="Cricket" className="scrolling-icon" />
-              <img src="/football-icon.png" alt="Football" className="scrolling-icon" />
-              <img src="/basketball-icon.png" alt="Basketball" className="scrolling-icon" />
-              <img src="/volleyball-icon.png" alt="Volleyball" className="scrolling-icon" />
-              <img src="/table-tennis-icon.png" alt="Table Tennis" className="scrolling-icon" />
-              <img src="/chess-icon.png" alt="Chess" className="scrolling-icon" />
-              <img src="/badminton-icon.png" alt="Badminton" className="scrolling-icon" />
+              <img src="/scrolling-1.jpg" alt="Sports Image 1" className="scrolling-icon" />
+              <img src="/scrolling-2.jpg" alt="Sports Image 2" className="scrolling-icon" />
+              <img src="/scrolling-3.jpg" alt="Sports Image 3" className="scrolling-icon" />
+              <img src="/scrolling-4.jpg" alt="Sports Image 4" className="scrolling-icon" />
+              <img src="/scrolling-5.jpg" alt="Sports Image 5" className="scrolling-icon" />
+              <img src="/scrolling-6.png" alt="Sports Image 6" className="scrolling-icon" />
+              <img src="/scrolling-7.png" alt="Sports Image 7" className="scrolling-icon" />
+              <img src="/scrolling-8.png" alt="Sports Image 8" className="scrolling-icon" />
+              <img src="/scrolling-1.jpg" alt="Sports Image 1" className="scrolling-icon" />
+              <img src="/scrolling-2.jpg" alt="Sports Image 2" className="scrolling-icon" />
+              <img src="/scrolling-3.jpg" alt="Sports Image 3" className="scrolling-icon" />
+              <img src="/scrolling-4.jpg" alt="Sports Image 4" className="scrolling-icon" />
+              <img src="/scrolling-5.jpg" alt="Sports Image 5" className="scrolling-icon" />
+              <img src="/scrolling-6.png" alt="Sports Image 6" className="scrolling-icon" />
+              <img src="/scrolling-7.png" alt="Sports Image 7" className="scrolling-icon" />
+              <img src="/scrolling-8.png" alt="Sports Image 8" className="scrolling-icon" />
             </div>
           </div>
         </motion.div>
@@ -193,6 +196,7 @@ const Home: React.FC = () => {
           </div>
         </motion.div>
       </div>
+      <Footer />
     </div>
   );
 };
