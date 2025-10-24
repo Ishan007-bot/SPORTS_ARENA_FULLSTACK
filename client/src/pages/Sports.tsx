@@ -9,57 +9,43 @@ const Sports: React.FC = () => {
       id: 'cricket',
       name: 'Cricket',
       description: 'Live cricket scoring and player statistics',
-      icon: '🏏',
-      color: '#e74c3c',
-      gradient: 'linear-gradient(135deg, #e74c3c, #c0392b)'
+      icon: '🏏'
     },
     {
       id: 'football',
       name: 'Football',
       description: 'Real-time football match updates',
-      icon: '⚽',
-      color: '#27ae60',
-      gradient: 'linear-gradient(135deg, #27ae60, #2ecc71)'
+      icon: '⚽'
     },
     {
       id: 'basketball',
       name: 'Basketball',
       description: 'Basketball game statistics and live scores',
-      icon: '🏀',
-      color: '#f39c12',
-      gradient: 'linear-gradient(135deg, #f39c12, #e67e22)'
+      icon: '🏀'
     },
     {
       id: 'volleyball',
       name: 'Volleyball',
       description: 'Volleyball match tracking and scoring',
-      icon: '🏐',
-      color: '#9b59b6',
-      gradient: 'linear-gradient(135deg, #9b59b6, #8e44ad)'
+      icon: '🏐'
     },
     {
       id: 'table-tennis',
       name: 'Table Tennis',
       description: 'Ping pong scoring and tournament management',
-      icon: '🏓',
-      color: '#3498db',
-      gradient: 'linear-gradient(135deg, #3498db, #2980b9)'
+      icon: '🏓'
     },
     {
       id: 'chess',
       name: 'Chess',
       description: 'Chess tournament scoring and rankings',
-      icon: '♟️',
-      color: '#2c3e50',
-      gradient: 'linear-gradient(135deg, #2c3e50, #34495e)'
+      icon: '♟️'
     },
     {
       id: 'badminton',
       name: 'Badminton',
       description: 'Badminton match tracking and scoring',
-      icon: '🏸',
-      color: '#e67e22',
-      gradient: 'linear-gradient(135deg, #e67e22, #d35400)'
+      icon: '🏸'
     }
   ];
 
@@ -94,7 +80,11 @@ const Sports: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="sports-title">Choose Your Sport</h1>
+          <img 
+            src="/choose-your-sport-image.png" 
+            alt="Choose Your Sport" 
+            className="choose-sport-image"
+          />
         </motion.div>
 
         <motion.div 
@@ -114,10 +104,7 @@ const Sports: React.FC = () => {
               }}
               whileTap={{ scale: 0.95 }}
             >
-              <div 
-                className="sport-card-header"
-                style={{ background: sport.gradient }}
-              >
+              <div className="sport-card-header">
                 <div className="sport-icon">{sport.icon}</div>
               </div>
               <div className="sport-card-content">
@@ -126,7 +113,6 @@ const Sports: React.FC = () => {
                 <Link 
                   to={`/arena/${sport.id}`} 
                   className="sport-enter-btn"
-                  style={{ background: sport.gradient }}
                 >
                   ENTER ARENA
                 </Link>

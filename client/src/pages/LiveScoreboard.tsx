@@ -161,7 +161,11 @@ const LiveScoreboard: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
         >
-          <h1 className="live-scoreboard-title">Live Scoreboard</h1>
+          <img 
+            src="/live-scoreboard-image.png" 
+            alt="Live Scoreboard" 
+            className="live-scoreboard-image"
+          />
           <div className={`connection-indicator ${isConnected ? 'connected' : 'disconnected'}`}>
             <div className="status-dot"></div>
             <span>{isConnected ? 'Live Updates Active' : 'Connection Lost'}</span>

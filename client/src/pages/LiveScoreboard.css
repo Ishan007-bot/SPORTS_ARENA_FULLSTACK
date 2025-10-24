@@ -15,17 +15,23 @@
   margin-bottom: 3rem;
 }
 
-.live-scoreboard-title {
-  font-size: 3rem;
-  font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 1rem;
-  text-shadow: 0 4px 20px rgba(255, 255, 255, 0.5);
+.live-scoreboard-image {
+  max-width: 40%;
+  height: auto;
+  margin-bottom: 2rem;
+  filter: drop-shadow(0 4px 20px rgba(255, 255, 255, 0.3));
+  transition: all 0.3s ease;
+}
+
+.live-scoreboard-image:hover {
+  transform: scale(1.02);
+  filter: drop-shadow(0 6px 25px rgba(255, 255, 255, 0.4));
 }
 
 .connection-indicator {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
   padding: 8px 16px;
   border-radius: 20px;
@@ -35,6 +41,8 @@
   font-size: 0.9rem;
   font-weight: 600;
   color: #fff;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .connection-indicator.connected {
@@ -305,8 +313,9 @@
     padding: 0 15px;
   }
 
-  .live-scoreboard-title {
-    font-size: 2.5rem;
+  .live-scoreboard-image {
+    max-width: 50%;
+    margin-bottom: 1.5rem;
   }
 
   .matches-grid {
@@ -329,8 +338,9 @@
 }
 
 @media (max-width: 480px) {
-  .live-scoreboard-title {
-    font-size: 2rem;
+  .live-scoreboard-image {
+    max-width: 45%;
+    margin-bottom: 1.2rem;
   }
 
   .no-matches h2 {
