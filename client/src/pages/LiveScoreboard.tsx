@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSocket } from '../context/SocketContext';
 import { motion, AnimatePresence } from 'framer-motion';
+import { API_ENDPOINTS } from '../config/api';
 import './LiveScoreboard.css';
 
 interface LiveMatch {
   _id: string;
   sport: string;
-  teamA: any;
-  teamB: any;
+  teamA?: any;
+  teamB?: any;
+  playerA?: any;
+  playerB?: any;
   status: string;
   startTime: string;
   score: any;
@@ -80,11 +83,18 @@ const LiveScoreboard: React.FC = () => {
   const fetchLiveMatches = async () => {
     try {
       console.log('Fetching live matches...');
-      const response = await fetch('http://localhost:5000/api/matches/live');
+      const response = await fetch(API_ENDPOINTS.LIVE_MATCHES);
       const data = await response.json();
       console.log('Live matches response:', data);
       if (data.success) {
         console.log('Setting live matches:', data.data);
+        console.log('First match data:', data.data[0]);
+        if (data.data[0]) {
+          console.log('TeamA:', data.data[0].teamA);
+          console.log('TeamB:', data.data[0].teamB);
+          console.log('PlayerA:', data.data[0].playerA);
+          console.log('PlayerB:', data.data[0].playerB);
+        }
         setLiveMatches(data.data);
       }
     } catch (error) {
@@ -216,7 +226,7 @@ const LiveScoreboard: React.FC = () => {
                       <div className="team">
                         <div className="team-name">
                           {match.sport === 'badminton' || match.sport === 'table-tennis' 
-                            ? (match.teamA?.name || 'Player A')
+                            ? (match.playerA?.name || 'Player A')
                             : (match.teamA?.name || 'Team A')
                           }
                         </div>
@@ -243,7 +253,7 @@ const LiveScoreboard: React.FC = () => {
                       <div className="team">
                         <div className="team-name">
                           {match.sport === 'badminton' || match.sport === 'table-tennis' 
-                            ? (match.teamB?.name || 'Player B')
+                            ? (match.playerB?.name || 'Player B')
                             : (match.teamB?.name || 'Team B')
                           }
                         </div>
@@ -265,6 +275,31 @@ const LiveScoreboard: React.FC = () => {
                         </div>
                       </div>
                     </div>
+
+                    {/* Timer information for timed sports */}
+                    {(match.sport === 'football' || match.sport === 'basketball' || match.sport === 'chess') && (
+                      <div className="match-timer">
+                        <div className="timer-info">
+                          <span className="timer-label">Time:</span>
+                          <span className="timer-value">
+                            {match.sport === 'football' 
+                              ? `${Math.floor((match.score?.time || 0) / 60)}:${((match.score?.time || 0) % 60).toString().padStart(2, '0')}`
+                              : match.sport === 'basketball'
+                              ? `Q${match.score?.quarter || 1} - ${Math.floor((match.score?.time || 0) / 60)}:${((match.score?.time || 0) % 60).toString().padStart(2, '0')}`
+                              : match.sport === 'chess'
+                              ? `${Math.floor((match.score?.time || 0) / 60)}:${((match.score?.time || 0) % 60).toString().padStart(2, '0')}`
+                              : '0:00'
+                            }
+                          </span>
+                        </div>
+                        {match.sport === 'football' && (
+                          <div className="period-info">
+                            <span className="period-label">Period:</span>
+                            <span className="period-value">{match.score?.period || '1st Half'}</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
 
                     {match.sport === 'cricket' && (
                       <div className="cricket-details">

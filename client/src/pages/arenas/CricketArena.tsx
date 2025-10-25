@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useSocket } from '../../context/SocketContext';
 import { motion } from 'framer-motion';
+import TeamPlayerNamesModal from '../../components/TeamPlayerNamesModal';
+import { API_ENDPOINTS } from '../../config/api';
 import './CricketArena.css';
 
 const CricketArena: React.FC = () => {
@@ -18,20 +20,31 @@ const CricketArena: React.FC = () => {
     }
   });
   const [isLive, setIsLive] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [winner, setWinner] = useState<string | null>(null);
+  const [winningReason, setWinningReason] = useState<string | null>(null);
+  const [showTeamNamesModal, setShowTeamNamesModal] = useState(false);
+  const [teamNames, setTeamNames] = useState({
+    teamA: '',
+    teamB: ''
+  });
   const { socket, joinMatch, leaveMatch } = useSocket();
 
   useEffect(() => {
     // Load existing match data on component mount
     const loadExistingMatch = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/matches/live');
+        const response = await fetch(API_ENDPOINTS.LIVE_MATCHES);
         const data = await response.json();
         if (data.success && data.data.length > 0) {
           const cricketMatch = data.data.find((match: any) => match.sport === 'cricket');
           if (cricketMatch) {
             console.log('Loading existing cricket match:', cricketMatch);
             setMatch(cricketMatch);
-            setIsLive(true);
+            setIsLive(cricketMatch.status === 'live');
+            setIsCompleted(cricketMatch.status === 'completed');
+            setWinner(cricketMatch.winner);
+            setWinningReason(cricketMatch.winningReason);
             if (cricketMatch.cricketScore) {
               setScore(cricketMatch.cricketScore);
             }
@@ -53,7 +66,7 @@ const CricketArena: React.FC = () => {
       console.log('Starting polling for cricket match:', match._id);
       const pollInterval = setInterval(async () => {
         try {
-          const response = await fetch(`http://localhost:5000/api/matches/${match._id}`);
+          const response = await fetch(API_ENDPOINTS.MATCH_BY_ID(match._id));
           const data = await response.json();
           if (data.success && data.data.cricketScore) {
             console.log('Cricket polling update received:', data.data.cricketScore);
@@ -71,11 +84,32 @@ const CricketArena: React.FC = () => {
     }
   }, [match?._id, isLive]);
 
+  // Listen for match-ended events
+  useEffect(() => {
+    if (socket && match?._id) {
+      const handleMatchEnded = (data: any) => {
+        if (data.matchId === match._id) {
+          console.log('Match ended:', data);
+          setIsLive(false);
+          setIsCompleted(true);
+          setWinner(data.winner);
+          setWinningReason(data.reason);
+        }
+      };
+
+      socket.on('match-ended', handleMatchEnded);
+      
+      return () => {
+        socket.off('match-ended', handleMatchEnded);
+      };
+    }
+  }, [socket, match?._id]);
+
   const updateScore = async (action: string, details: any) => {
     if (!match?._id) return;
     
     try {
-      const response = await fetch(`http://localhost:5000/api/matches/${match._id}/score`, {
+      const response = await fetch(API_ENDPOINTS.MATCH_SCORE(match._id), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -101,17 +135,25 @@ const CricketArena: React.FC = () => {
   };
 
   const startMatch = async () => {
+    if (!teamNames.teamA.trim() || !teamNames.teamB.trim()) {
+      setShowTeamNamesModal(true);
+      return;
+    }
+    await createMatch();
+  };
+
+  const createMatch = async () => {
     try {
       // First create a match in the database
-      const createResponse = await fetch('http://localhost:5000/api/matches', {
+      const createResponse = await fetch(API_ENDPOINTS.MATCHES, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           sport: 'cricket',
-          teamA: { name: 'Team A' },
-          teamB: { name: 'Team B' },
+          teamA: { name: teamNames.teamA },
+          teamB: { name: teamNames.teamB },
           status: 'scheduled',
           venue: 'Cricket Ground'
         }),
@@ -123,7 +165,7 @@ const CricketArena: React.FC = () => {
         setMatch(matchData.data);
         
         // Now start the match
-        const startResponse = await fetch(`http://localhost:5000/api/matches/${matchData.data._id}/start`, {
+        const startResponse = await fetch(API_ENDPOINTS.MATCH_START(matchData.data._id), {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -137,6 +179,32 @@ const CricketArena: React.FC = () => {
       }
     } catch (error) {
       console.error('Error starting match:', error);
+    }
+  };
+
+  const endMatch = async () => {
+    if (!match?._id) return;
+    
+    try {
+      const response = await fetch(API_ENDPOINTS.MATCH_END(match._id), {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          winner: score.wickets >= 10 ? 'teamB' : 'teamA',
+          winningReason: 'Match ended manually'
+        }),
+      });
+
+      if (response.ok) {
+        setIsLive(false);
+        setIsCompleted(true);
+        setWinner(score.wickets >= 10 ? 'teamB' : 'teamA');
+        setWinningReason('Match ended manually');
+      }
+    } catch (error) {
+      console.error('Error ending match:', error);
     }
   };
 
@@ -156,9 +224,27 @@ const CricketArena: React.FC = () => {
     updateScore(type, {});
   };
 
-  const undoLastBall = () => {
-    // Implement undo functionality
-    console.log('Undo last ball');
+  const undoLastBall = async () => {
+    if (!match || !isLive) return;
+    
+    try {
+      const response = await fetch(API_ENDPOINTS.MATCH_UNDO(match._id), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          setScore(data.data.cricketScore);
+          console.log('Last ball undone successfully');
+        }
+      }
+    } catch (error) {
+      console.error('Error undoing last ball:', error);
+    }
   };
 
   return (
@@ -177,10 +263,34 @@ const CricketArena: React.FC = () => {
               <span className="vs">VS</span>
               <span className="team">{match?.teamB?.name}</span>
             </div>
-            <div className={`match-status ${isLive ? 'live' : 'scheduled'}`}>
-              {isLive ? 'LIVE' : 'SCHEDULED'}
+            <div className={`match-status ${isLive ? 'live' : isCompleted ? 'completed' : 'scheduled'}`}>
+              {isLive ? 'LIVE' : isCompleted ? 'COMPLETED' : 'SCHEDULED'}
             </div>
           </div>
+          
+          {isCompleted && (
+            <motion.div 
+              className="match-completion-banner"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+            >
+              <div className="completion-content">
+                <h2 className="completion-title">Match Completed!</h2>
+                <div className="winner-info">
+                  <span className="winner-label">Winner:</span>
+                  <span className="winner-name">
+                    {winner === 'teamA' ? match?.teamA?.name : 
+                     winner === 'teamB' ? match?.teamB?.name : 
+                     winner === 'draw' ? 'Draw' : 'Unknown'}
+                  </span>
+                </div>
+                <div className="completion-reason">
+                  {winningReason}
+                </div>
+              </div>
+            </motion.div>
+          )}
         </motion.div>
 
         <div className="cricket-scoreboard">
@@ -249,15 +359,32 @@ const CricketArena: React.FC = () => {
               <button className="action-btn undo" onClick={undoLastBall}>
                 Undo Last Ball
               </button>
-              {!isLive && (
+              {!isLive && !isCompleted && (
                 <button className="action-btn start" onClick={startMatch}>
                   Start Match
+                </button>
+              )}
+              {isLive && !isCompleted && (
+                <button className="action-btn end" onClick={endMatch}>
+                  End Match
                 </button>
               )}
             </div>
           </motion.div>
         </div>
       </div>
+
+      <TeamPlayerNamesModal
+        isOpen={showTeamNamesModal}
+        onClose={() => setShowTeamNamesModal(false)}
+        onConfirm={(names) => {
+          setTeamNames(names as { teamA: string; teamB: string });
+          setShowTeamNamesModal(false);
+          createMatch();
+        }}
+        type="teams"
+        sport="cricket"
+      />
     </div>
   );
 };

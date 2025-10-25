@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useSocket } from '../../context/SocketContext';
+import MatchSettings from '../../components/MatchSettings';
+import TeamPlayerNamesModal from '../../components/TeamPlayerNamesModal';
+import { API_ENDPOINTS } from '../../config/api';
 import './VolleyballArena.css';
 
 const VolleyballArena: React.FC = () => {
@@ -11,19 +14,39 @@ const VolleyballArena: React.FC = () => {
   const [currentSet, setCurrentSet] = useState(1);
   const [serving, setServing] = useState<'teamA' | 'teamB'>('teamA');
   const [isLive, setIsLive] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+  const [winner, setWinner] = useState<string | null>(null);
+  const [winningReason, setWinningReason] = useState<string | null>(null);
   const [match, setMatch] = useState<any>(null);
+  const [showSettings, setShowSettings] = useState(false);
+  const [matchSettings, setMatchSettings] = useState({
+    totalSets: 3, // Default to 3 sets
+    pointsPerSet: 25 // Default points per set
+  });
+  const [showTeamNamesModal, setShowTeamNamesModal] = useState(false);
+  const [teamNames, setTeamNames] = useState({
+    teamA: '',
+    teamB: ''
+  });
   const { socket, joinMatch, leaveMatch } = useSocket();
+
+  // Debug: Log match data when it changes
+  useEffect(() => {
+    console.log('Rendering volleyball match:', match);
+  }, [match]);
 
   // Load existing match data on component mount
   useEffect(() => {
     const loadExistingMatch = async () => {
       try {
-        const response = await fetch('http://localhost:5000/api/matches/live');
+        const response = await fetch(API_ENDPOINTS.LIVE_MATCHES);
         const data = await response.json();
         if (data.success && data.data.length > 0) {
           // Find the first live volleyball match
           const volleyballMatch = data.data.find((match: any) => match.sport === 'volleyball');
           if (volleyballMatch) {
+            console.log('Loading existing volleyball match:', volleyballMatch);
+            console.log('Team names in loaded match:', volleyballMatch.teamA, volleyballMatch.teamB);
             setMatch(volleyballMatch);
             setIsLive(true);
             if (volleyballMatch.volleyballScore) {
@@ -45,11 +68,12 @@ const VolleyballArena: React.FC = () => {
       console.log('Starting polling for volleyball match:', match._id);
       const pollInterval = setInterval(async () => {
         try {
-          const response = await fetch(`http://localhost:5000/api/matches/${match._id}`);
+          const response = await fetch(API_ENDPOINTS.MATCH_BY_ID(match._id));
           const data = await response.json();
           if (data.success && data.data.volleyballScore) {
             console.log('Volleyball polling update received:', data.data.volleyballScore);
-            setScore(data.data.volleyballScore);
+            // Don't update score from polling since we're sending complete score objects
+            // setScore(data.data.volleyballScore);
           }
         } catch (error) {
           console.error('Volleyball polling error:', error);
@@ -66,6 +90,7 @@ const VolleyballArena: React.FC = () => {
   const addPoint = async (team: 'teamA' | 'teamB') => {
     if (!match?._id) return;
     
+    let updatedScore;
     setScore(prev => {
       // Ensure team objects exist
       const teamA = prev.teamA || { points: 0, sets: 0 };
@@ -83,24 +108,30 @@ const VolleyballArena: React.FC = () => {
       
       if (newScore[team].points >= setTarget && 
           newScore[team].points - newScore[otherTeam].points >= 2) {
-        // Set won
-        const updatedScore = {
+        // Set won - store the final score of this set
+        const setWonScore = {
           ...newScore,
           [team]: { ...newScore[team], sets: newScore[team].sets + 1, points: 0 },
-          [otherTeam]: { ...newScore[otherTeam], points: 0 }
+          [otherTeam]: { ...newScore[otherTeam], points: 0 },
+          setScores: [...((prev as any).setScores || []), {
+            teamA: newScore.teamA.points,
+            teamB: newScore.teamB.points
+          }]
         };
         setCurrentSet(prev => prev + 1);
-        return updatedScore;
+        updatedScore = setWonScore;
+        return setWonScore;
       }
 
       // Switch serving team
       setServing(otherTeam);
+      updatedScore = newScore;
       return newScore;
     });
 
     // Update score in database
     try {
-      const response = await fetch(`http://localhost:5000/api/matches/${match._id}/score`, {
+      const response = await fetch(API_ENDPOINTS.MATCH_SCORE(match._id), {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -109,16 +140,14 @@ const VolleyballArena: React.FC = () => {
           sport: 'volleyball',
           action: 'point',
           team,
-          details: { points: (score[team]?.points || 0) + 1 }
+          details: updatedScore // Send the complete updated score object
         }),
       });
 
         if (response.ok) {
           const data = await response.json();
-          // Update with backend score if available
-          if (data.data.volleyballScore) {
-            setScore(data.data.volleyballScore);
-          }
+          // Don't update with backend score since we sent the complete score object
+          // The frontend already has the correct score
         }
     } catch (error) {
       console.error('Error updating score:', error);
@@ -126,28 +155,39 @@ const VolleyballArena: React.FC = () => {
   };
 
   const startMatch = async () => {
+    if (!teamNames.teamA.trim() || !teamNames.teamB.trim()) {
+      setShowTeamNamesModal(true);
+      return;
+    }
+    await createMatch();
+  };
+
+  const createMatch = async () => {
     try {
       // First create a match in the database
-      const createResponse = await fetch('http://localhost:5000/api/matches', {
+      const createResponse = await fetch(API_ENDPOINTS.MATCHES, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           sport: 'volleyball',
-          teamA: { name: 'Team A' },
-          teamB: { name: 'Team B' },
+          teamA: { name: teamNames.teamA },
+          teamB: { name: teamNames.teamB },
           status: 'scheduled',
-          venue: 'Volleyball Court'
+          venue: 'Volleyball Court',
+          matchSettings: matchSettings
         }),
       });
 
       if (createResponse.ok) {
         const matchData = await createResponse.json();
+        console.log('Volleyball match created:', matchData.data);
+        console.log('Team names in response:', matchData.data.teamA, matchData.data.teamB);
         setMatch(matchData.data);
         
         // Now start the match
-        const startResponse = await fetch(`http://localhost:5000/api/matches/${matchData.data._id}/start`, {
+        const startResponse = await fetch(API_ENDPOINTS.MATCH_START(matchData.data._id), {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -163,6 +203,34 @@ const VolleyballArena: React.FC = () => {
     }
   };
 
+  const endMatch = async () => {
+    if (!match?._id) return;
+    
+    try {
+      const response = await fetch(API_ENDPOINTS.MATCH_END(match._id), {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          winner: score.teamA.sets > score.teamB.sets ? 'teamA' : 
+                  score.teamB.sets > score.teamA.sets ? 'teamB' : 'draw',
+          winningReason: 'Match ended manually'
+        }),
+      });
+
+      if (response.ok) {
+        setIsLive(false);
+        setIsCompleted(true);
+        setWinner(score.teamA.sets > score.teamB.sets ? 'teamA' : 
+                  score.teamB.sets > score.teamA.sets ? 'teamB' : 'draw');
+        setWinningReason('Match ended manually');
+      }
+    } catch (error) {
+      console.error('Error ending match:', error);
+    }
+  };
+
   return (
     <div className="volleyball-arena">
       <div className="volleyball-arena-container">
@@ -175,9 +243,9 @@ const VolleyballArena: React.FC = () => {
           <h1 className="arena-title">Volleyball Arena</h1>
           <div className="match-info">
             <div className="teams">
-              <span className="team">Team A</span>
+              <span className="team">{match?.teamA?.name || 'Team A'}</span>
               <span className="vs">VS</span>
-              <span className="team">Team B</span>
+              <span className="team">{match?.teamB?.name || 'Team B'}</span>
             </div>
             <div className={`match-status ${isLive ? 'live' : 'scheduled'}`}>
               {isLive ? 'LIVE' : 'SCHEDULED'}
@@ -194,20 +262,20 @@ const VolleyballArena: React.FC = () => {
           >
             <div className="main-score">
               <div className="team-score">
-                <span className="team-name">Team A</span>
+                <span className="team-name">{match?.teamA?.name || 'Team A'}</span>
                 <span className="points">{score.teamA?.points || 0}</span>
                 <div className="sets">Sets: {score.teamA?.sets || 0}</div>
               </div>
               <div className="separator">-</div>
               <div className="team-score">
                 <span className="points">{score.teamB?.points || 0}</span>
-                <span className="team-name">Team B</span>
+                <span className="team-name">{match?.teamB?.name || 'Team B'}</span>
                 <div className="sets">Sets: {score.teamB?.sets || 0}</div>
               </div>
             </div>
             <div className="set-info">
               <span className="current-set">Set {currentSet}</span>
-              <span className="serving">Serving: {serving === 'teamA' ? 'Team A' : 'Team B'}</span>
+              <span className="serving">Serving: {serving === 'teamA' ? (match?.teamA?.name || 'Team A') : (match?.teamB?.name || 'Team B')}</span>
             </div>
           </motion.div>
 
@@ -221,24 +289,55 @@ const VolleyballArena: React.FC = () => {
               <h3>Points</h3>
               <div className="points-buttons">
                 <button className="score-btn" onClick={() => addPoint('teamA')}>
-                  Team A Point
+                  {match?.teamA?.name || 'Team A'} Point
                 </button>
                 <button className="score-btn" onClick={() => addPoint('teamB')}>
-                  Team B Point
+                  {match?.teamB?.name || 'Team B'} Point
                 </button>
               </div>
             </div>
 
             <div className="actions-section">
-              {!isLive && (
+              {!isLive && !isCompleted && (
                 <button className="action-btn start" onClick={startMatch}>
                   Start Match
                 </button>
               )}
+              {isLive && !isCompleted && (
+                <button className="action-btn end" onClick={endMatch}>
+                  End Match
+                </button>
+              )}
+              <button 
+                className="settings-btn"
+                onClick={() => setShowSettings(true)}
+                title="Match Settings"
+              >
+                ⚙️ Settings
+              </button>
             </div>
           </motion.div>
         </div>
       </div>
+      
+      <MatchSettings
+        sport="volleyball"
+        onSettingsChange={setMatchSettings}
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+      />
+
+      <TeamPlayerNamesModal
+        isOpen={showTeamNamesModal}
+        onClose={() => setShowTeamNamesModal(false)}
+        onConfirm={(names) => {
+          setTeamNames(names as { teamA: string; teamB: string });
+          setShowTeamNamesModal(false);
+          createMatch();
+        }}
+        type="teams"
+        sport="volleyball"
+      />
     </div>
   );
 };

@@ -242,6 +242,16 @@
   box-shadow: 0 8px 15px rgba(39, 174, 96, 0.3);
 }
 
+.action-btn.end {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: #fff;
+}
+
+.action-btn.end:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(231, 76, 60, 0.3);
+}
+
 @keyframes pulse {
   0% {
     opacity: 1;
@@ -318,6 +328,84 @@
   .action-btn {
     padding: 10px 20px;
     font-size: 0.9rem;
+  }
+}
+
+/* Match completion banner */
+.match-completion-banner {
+  background: linear-gradient(135deg, #8e44ad 0%, #2c3e50 100%);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 15px;
+  padding: 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.completion-content {
+  color: #fff;
+}
+
+.completion-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: #ffd700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.winner-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.winner-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.winner-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffd700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.completion-reason {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
+}
+
+.match-status.completed {
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  color: #000;
+  font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .match-completion-banner {
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+  
+  .completion-title {
+    font-size: 1.5rem;
+  }
+  
+  .winner-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .winner-name {
+    font-size: 1.3rem;
   }
 }
 

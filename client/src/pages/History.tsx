@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { API_ENDPOINTS } from '../config/api';
 import './History.css';
 
 const History: React.FC = () => {
   const [matches, setMatches] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
+  const [deletingMatch, setDeletingMatch] = useState<string | null>(null);
 
   useEffect(() => {
     fetchMatches();
@@ -13,10 +15,17 @@ const History: React.FC = () => {
 
   const fetchMatches = async () => {
     try {
-      const response = await fetch('/api/matches');
+      console.log('Fetching matches for history...');
+      const response = await fetch(API_ENDPOINTS.MATCHES);
       const data = await response.json();
+      console.log('All matches received:', data);
+      
       if (data.success) {
-        setMatches(data.data);
+        console.log('Total matches:', data.data.length);
+        // Filter for completed matches only
+        const completedMatches = data.data.filter((match: any) => match.status === 'completed');
+        console.log('Completed matches:', completedMatches.length, completedMatches);
+        setMatches(completedMatches);
       }
     } catch (error) {
       console.error('Error fetching matches:', error);
@@ -59,6 +68,102 @@ const History: React.FC = () => {
       hour: '2-digit',
       minute: '2-digit'
     });
+  };
+
+  const getFinalScore = (match: any) => {
+    const sport = match.sport;
+    
+    switch (sport) {
+      case 'cricket':
+        return {
+          teamA: `${match.cricketScore?.runs || 0}/${match.cricketScore?.wickets || 0}`,
+          teamB: `${match.cricketScore?.runs || 0}/${match.cricketScore?.wickets || 0}`
+        };
+      
+      case 'football':
+        return {
+          teamA: match.footballScore?.teamA?.goals || 0,
+          teamB: match.footballScore?.teamB?.goals || 0
+        };
+      
+      case 'basketball':
+        return {
+          teamA: match.basketballScore?.teamA?.points || 0,
+          teamB: match.basketballScore?.teamB?.points || 0
+        };
+      
+      case 'volleyball':
+        const volleyballSets = match.volleyballScore?.setScores || [];
+        const volleyballSetScores = volleyballSets.map((set: any, index: number) => 
+          `Set ${index + 1}: ${set.teamA}-${set.teamB}`
+        ).join(', ');
+        return {
+          teamA: `${match.volleyballScore?.teamA?.sets || 0} sets`,
+          teamB: `${match.volleyballScore?.teamB?.sets || 0} sets`,
+          details: volleyballSetScores || 'No set scores available'
+        };
+      
+      case 'badminton':
+        const badmintonGames = match.badmintonScore?.gameScores || [];
+        const badmintonGameScores = badmintonGames.map((game: any, index: number) => 
+          `Game ${index + 1}: ${game.playerA}-${game.playerB}`
+        ).join(', ');
+        return {
+          playerA: `${match.badmintonScore?.playerA?.games || 0} games`,
+          playerB: `${match.badmintonScore?.playerB?.games || 0} games`,
+          details: badmintonGameScores || 'No game scores available'
+        };
+      
+      case 'table-tennis':
+        const tableTennisGames = match.tableTennisScore?.gameScores || [];
+        const tableTennisGameScores = tableTennisGames.map((game: any, index: number) => 
+          `Game ${index + 1}: ${game.playerA}-${game.playerB}`
+        ).join(', ');
+        return {
+          playerA: `${match.tableTennisScore?.playerA?.games || 0} games`,
+          playerB: `${match.tableTennisScore?.playerB?.games || 0} games`,
+          details: tableTennisGameScores || 'No game scores available'
+        };
+      
+      case 'chess':
+        return {
+          result: match.chessScore?.result || 'Draw',
+          whiteTime: `${Math.floor((match.chessScore?.whiteTime || 0) / 60)}:${((match.chessScore?.whiteTime || 0) % 60).toString().padStart(2, '0')}`,
+          blackTime: `${Math.floor((match.chessScore?.blackTime || 0) / 60)}:${((match.chessScore?.blackTime || 0) % 60).toString().padStart(2, '0')}`
+        };
+      
+      default:
+        return { teamA: 'N/A', teamB: 'N/A' };
+    }
+  };
+
+  const deleteMatch = async (matchId: string) => {
+    if (!window.confirm('Are you sure you want to delete this match? This action cannot be undone.')) {
+      return;
+    }
+
+    setDeletingMatch(matchId);
+    try {
+      const response = await fetch(API_ENDPOINTS.MATCH_BY_ID(matchId), {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        // Remove the match from the local state
+        setMatches(prevMatches => prevMatches.filter(match => match._id !== matchId));
+      } else {
+        const errorData = await response.json();
+        alert(`Failed to delete match: ${errorData.error || 'Unknown error'}`);
+      }
+    } catch (error) {
+      console.error('Error deleting match:', error);
+      alert('Failed to delete match. Please try again.');
+    } finally {
+      setDeletingMatch(null);
+    }
   };
 
   const filteredMatches = matches.filter(match => {
@@ -167,7 +272,22 @@ const History: React.FC = () => {
                   <div className="teams">
                     <div className="team">
                       <div className="team-name">
-                        {match.teamA?.name || 'Team A'}
+                        {match.sport === 'badminton' || match.sport === 'table-tennis' 
+                          ? (match.playerA?.name || 'Player A')
+                          : (match.teamA?.name || 'Team A')
+                        }
+                      </div>
+                      <div className="team-score">
+                        {(() => {
+                          const score = getFinalScore(match);
+                          if (match.sport === 'chess') {
+                            return score.result;
+                          } else if (match.sport === 'badminton' || match.sport === 'table-tennis') {
+                            return score.playerA;
+                          } else {
+                            return score.teamA;
+                          }
+                        })()}
                       </div>
                     </div>
                     
@@ -175,20 +295,71 @@ const History: React.FC = () => {
                     
                     <div className="team">
                       <div className="team-name">
-                        {match.teamB?.name || 'Team B'}
+                        {match.sport === 'badminton' || match.sport === 'table-tennis' 
+                          ? (match.playerB?.name || 'Player B')
+                          : (match.teamB?.name || 'Team B')
+                        }
+                      </div>
+                      <div className="team-score">
+                        {(() => {
+                          const score = getFinalScore(match);
+                          if (match.sport === 'chess') {
+                            return `White: ${score.whiteTime} | Black: ${score.blackTime}`;
+                          } else if (match.sport === 'badminton' || match.sport === 'table-tennis') {
+                            return score.playerB;
+                          } else {
+                            return score.teamB;
+                          }
+                        })()}
                       </div>
                     </div>
                   </div>
 
                   <div className="match-result">
-                    <div className={`status-badge ${match.status}`}>
-                      {match.status.toUpperCase()}
-                    </div>
-                    {match.winner && (
-                      <div className="winner">
-                        Winner: {match.winner === 'teamA' ? match.teamA?.name : match.teamB?.name}
+                    <div className="result-info">
+                      <div className={`status-badge ${match.status}`}>
+                        {match.status.toUpperCase()}
                       </div>
-                    )}
+                      {match.winner && (
+                        <div className="winner">
+                          Winner: {match.winner === 'teamA' ? 
+                            (match.sport === 'badminton' || match.sport === 'table-tennis' 
+                              ? (match.playerA?.name || 'Player A')
+                              : (match.teamA?.name || 'Team A')
+                            ) : 
+                            (match.sport === 'badminton' || match.sport === 'table-tennis' 
+                              ? (match.playerB?.name || 'Player B')
+                              : (match.teamB?.name || 'Team B')
+                            )
+                          }
+                        </div>
+                      )}
+                      {match.winningReason && (
+                        <div className="winning-reason">
+                          {match.winningReason}
+                        </div>
+                      )}
+                      {(() => {
+                        const score = getFinalScore(match);
+                        if (score.details && (match.sport === 'volleyball' || match.sport === 'badminton' || match.sport === 'table-tennis')) {
+                          return (
+                            <div className="detailed-scores">
+                              <div className="scores-label">Detailed Scores:</div>
+                              <div className="scores-details">{score.details}</div>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })()}
+                    </div>
+                    <button 
+                      className="delete-btn"
+                      onClick={() => deleteMatch(match._id)}
+                      disabled={deletingMatch === match._id}
+                      title="Delete Match"
+                    >
+                      {deletingMatch === match._id ? '⏳' : '🗑️'}
+                    </button>
                   </div>
                 </div>
               </motion.div>

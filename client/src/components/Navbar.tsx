@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useSocket } from '../context/SocketContext';
+import { useAuth } from '../context/AuthContext';
 import './Navbar.css';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { isConnected } = useSocket();
+  const { user, isAuthenticated, logout, canScore, canAdmin } = useAuth();
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -14,6 +17,11 @@ const Navbar: React.FC = () => {
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
   };
 
   return (
@@ -66,9 +74,29 @@ const Navbar: React.FC = () => {
             </span>
           </div>
           
-          <Link to="/tournament" className="btn btn-primary admin-btn">
-            ADMIN LOGIN
-          </Link>
+          {isAuthenticated ? (
+            <div className="user-info">
+              <span className="user-name">{user?.username}</span>
+              <span className={`user-role ${user?.role}`}>{user?.role?.toUpperCase()}</span>
+              {canAdmin() && (
+                <Link to="/tournament" className="btn btn-primary admin-btn">
+                  ADMIN
+                </Link>
+              )}
+              <button onClick={handleLogout} className="btn btn-secondary logout-btn">
+                LOGOUT
+              </button>
+            </div>
+          ) : (
+            <div className="auth-buttons">
+              <Link to="/login" className="btn btn-primary login-btn">
+                LOGIN
+              </Link>
+              <Link to="/register" className="btn btn-secondary register-btn">
+                REGISTER
+              </Link>
+            </div>
+          )}
 
           <button 
             className="mobile-menu-toggle"

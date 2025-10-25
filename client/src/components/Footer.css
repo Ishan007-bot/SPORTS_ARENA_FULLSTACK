@@ -113,21 +113,31 @@
 .developer-info {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
   position: relative;
   z-index: 1;
 }
 
-.developer-icon {
-  font-size: 1.5rem;
-  background: rgba(102, 126, 234, 0.2);
+.developer-image {
+  background: rgba(102, 126, 234, 0.3);
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 80px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(102, 126, 234, 0.3);
+  border: 3px solid rgba(102, 126, 234, 0.4);
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.developer-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 50%;
 }
 
 .developer-details {
@@ -135,62 +145,23 @@
 }
 
 .developer-title {
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   color: rgba(255, 255, 255, 0.8);
-  margin: 0 0 0.3rem 0;
+  margin: 0 0 0.5rem 0;
   font-weight: 500;
 }
 
 .developer-name {
-  font-size: 1rem;
+  font-size: 1.3rem;
   font-weight: 700;
   color: #fff;
-  margin: 0 0 0.2rem 0;
+  margin: 0 0 0.4rem 0;
 }
 
 .developer-batch {
-  font-size: 0.8rem;
+  font-size: 1rem;
   color: rgba(255, 255, 255, 0.7);
   margin: 0;
-}
-
-.footer-connect {
-  text-align: center;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.connect-text {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0 0 1rem 0;
-}
-
-.connect-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-}
-
-.connect-btn {
-  background: rgba(0, 0, 0, 0.3);
-  color: #fff;
-  text-decoration: none;
-  padding: 0.6rem 1.2rem;
-  border-radius: 20px;
-  font-size: 0.85rem;
-  font-weight: 600;
-  border: 1px solid rgba(142, 68, 173, 0.3);
-  transition: all 0.3s ease;
-  display: inline-block;
-}
-
-.connect-btn:hover {
-  background: rgba(142, 68, 173, 0.2);
-  border-color: rgba(142, 68, 173, 0.5);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 /* Responsive */
@@ -203,15 +174,6 @@
   .footer-section {
     padding: 1rem;
   }
-  
-  .connect-buttons {
-    gap: 0.8rem;
-  }
-  
-  .connect-btn {
-    padding: 0.5rem 1rem;
-    font-size: 0.8rem;
-  }
 }
 
 @media (max-width: 480px) {
@@ -222,11 +184,11 @@
   .developer-info {
     flex-direction: column;
     text-align: center;
-    gap: 0.8rem;
+    gap: 1rem;
   }
   
-  .connect-buttons {
-    flex-direction: column;
-    align-items: center;
+  .developer-image {
+    width: 70px;
+    height: 70px;
   }
 }

@@ -1,108 +1,52 @@
-# Sports Arena - Multi-Sports Scoring Application
+# Sports Arena Management System
 
-A comprehensive full-stack application for scoring and managing multiple sports including Cricket, Football, Basketball, Volleyball, Table Tennis, Chess, and Badminton. Built with MERN stack and real-time updates using Socket.io.
+A comprehensive web application for managing live sports scoring across multiple sports with real-time updates, user authentication, and match history tracking.
 
 ## 🏆 Features
 
-### Core Functionality
-- **Multi-Sport Support**: Cricket, Football, Basketball, Volleyball, Table Tennis, Chess, Badminton
-- **Real-time Scoring**: Live score updates across all connected clients
-- **Tournament Management**: Create and manage tournaments with team registration
-- **Match History**: Complete history tracking for all matches and tournaments
-- **Live Scoreboard**: Real-time score display on homepage and individual arenas
+### 🎮 Supported Sports
+- **Football** - Full match scoring with customizable halves and timer
+- **Basketball** - Quarter-based scoring with timer management
+- **Cricket** - Ball-by-ball scoring with overs tracking
+- **Chess** - Time-controlled matches with move tracking
+- **Volleyball** - Set-based scoring with customizable match length
+- **Badminton** - Game-based scoring with customizable match length
+- **Table Tennis** - Game-based scoring with customizable match length
 
-### Sport-Specific Features
+### 👥 User Management System
+- **Admin Role** - Full system access and user management
+- **Scorer Role** - Can create and manage matches for all sports
+- **Normal User** - Can view live scores and match history
+- **Public Registration** - Anyone can register to become a scorer
 
-#### 🏏 Cricket (T20/ODI Format)
-- Runs tracking (+1, +2, +3, +4, +6)
-- Overs and balls management
-- Wickets tracking with dismissal types
-- Extras (Wides, No Balls, Byes, Leg Byes)
-- Current batsman and bowler statistics
-- Undo last ball functionality
+### 🔐 Authentication & Security
+- **JWT Token-based** authentication
+- **Password hashing** with bcrypt
+- **Role-based access control**
+- **Session management** with automatic logout
+- **Protected routes** for sensitive operations
 
-#### ⚽ Football
-- Goal scoring
-- Time tracking with periods
-- Yellow and Red card management
-- Match status tracking
+### 📊 Live Scoring Features
+- **Real-time score updates** using Socket.IO
+- **Live scoreboard** with automatic refresh
+- **Match timer** with auto-start functionality
+- **Automatic match completion** based on sport rules
+- **Manual match ending** option for all sports
+- **Team/Player name input** before match start
 
-#### 🏀 Basketball (FIBA Rules)
-- Point scoring (1, 2, 3 points)
-- Quarter management
-- Team fouls tracking
-- Time management
-
-#### ♟️ Chess
-- Tournament scoring (1-0, 0-1, 1/2-1/2)
-- Dual timer system
-- Player switching
-- Result management
-
-#### 🏐 Volleyball
-- Rally scoring system
-- Set management (best of 5)
-- Service tracking
-- Point-by-point scoring
-
-#### 🏸 Badminton
-- Best of 3 games format
-- 21-point games with 2-point margin
-- Service rotation rules
-- Game and match tracking
-
-#### 🏓 Table Tennis
-- 11-point games with 2-point margin
-- Service rotation (every 2 points)
-- Deuce handling
-- Game and match tracking
-
-## 🛠️ Technology Stack
-
-### Backend
-- **Node.js** with Express.js
-- **MongoDB** with Mongoose ODM
-- **Socket.io** for real-time communication
-- **JWT** for authentication
-- **Bcryptjs** for password hashing
-- **Express Validator** for input validation
-
-### Frontend
-- **React 18** with TypeScript
-- **React Router** for navigation
-- **Framer Motion** for animations
-- **Socket.io Client** for real-time updates
-- **Axios** for API calls
-- **React Hot Toast** for notifications
-
-## 📁 Project Structure
-
-```
-Sports_Arena/
-├── client/                 # React frontend
-│   ├── public/
-│   ├── src/
-│   │   ├── components/     # Reusable components
-│   │   ├── pages/          # Page components
-│   │   │   └── arenas/     # Sport-specific arenas
-│   │   ├── context/        # React context providers
-│   │   └── App.tsx
-│   └── package.json
-├── server/                 # Node.js backend
-│   ├── config/            # Database configuration
-│   ├── controllers/       # Route controllers
-│   ├── middleware/        # Custom middleware
-│   ├── models/           # MongoDB schemas
-│   ├── routes/           # API routes
-│   └── server.js
-└── README.md
-```
+### 📈 Match Management
+- **Match history** with detailed score tracking
+- **Delete matches** from history
+- **Final score display** for all sports
+- **Detailed set/game scores** for multi-set sports
+- **Winner announcement** with winning criteria
+- **Match status tracking** (live, completed, ended)
 
 ## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- MongoDB (local or cloud)
+- Node.js (v14 or higher)
+- MongoDB (running on localhost:27017)
 - npm or yarn
 
 ### Installation
@@ -113,184 +57,281 @@ Sports_Arena/
    cd Sports_Arena
    ```
 
-2. **Install backend dependencies**
+2. **Install server dependencies**
    ```bash
    cd server
    npm install
    ```
 
-3. **Install frontend dependencies**
+3. **Install client dependencies**
    ```bash
    cd ../client
    npm install
    ```
 
-4. **Environment Setup**
-   
-   Create a `.env` file in the server directory:
-   ```env
-   NODE_ENV=development
-   PORT=5000
-   MONGODB_URI=mongodb://localhost:27017/sports_arena
-   JWT_SECRET=your_jwt_secret_key_here
-   CLIENT_URL=http://localhost:3000
-   ```
+4. **Start MongoDB**
+   Make sure MongoDB is running on `localhost:27017`
 
-5. **Start the application**
+5. **Create admin user**
+   ```bash
+   cd ../server
+   node create-admin.js
+   ```
+   This creates an admin user with:
+   - Email: `admin@sportsarena.com`
+   - Password: `admin123`
+
+6. **Start the application**
    
-   **Backend (Terminal 1):**
+   **Terminal 1 - Backend Server:**
    ```bash
    cd server
-   npm run dev
+   npm start
    ```
-   
-   **Frontend (Terminal 2):**
+   Server runs on `http://localhost:5000`
+
+   **Terminal 2 - Frontend Client:**
    ```bash
    cd client
    npm start
    ```
+   Client runs on `http://localhost:3000`
 
-6. **Access the application**
-   - Frontend: http://localhost:3000
-   - Backend API: http://localhost:5000
+## 🎯 User Guide
 
-## 🎮 Usage
+### For Administrators
 
-### Creating a Tournament
-1. Navigate to the Tournament page
-2. Click "Create Tournament"
-3. Fill in tournament details (name, sport, format, dates, venue)
-4. Add teams to the tournament
-5. Generate matches automatically
+1. **Login** with admin credentials:
+   - Email: `admin@sportsarena.com`
+   - Password: `admin123`
 
-### Starting a Match
-1. Go to the desired sport arena
-2. Click "Start Match"
-3. Use the scoring controls to update scores
-4. Scores update in real-time across all connected clients
+2. **Access Features:**
+   - View all users in the system
+   - Create and manage matches
+   - Access admin panel (Tournament feature)
+   - Full system control
 
-### Live Scoreboard
-- View all live matches on the Live Scoreboard page
-- Real-time updates without page refresh
-- Match status and current scores
+### For Scorers
 
-### History
-- View all completed matches
-- Filter by sport
-- Tournament results and statistics
+1. **Registration:**
+   - Visit `/register` or click "REGISTER" in navbar
+   - Enter username, email, and password
+   - Account automatically created with scorer role
 
-## 🔧 API Endpoints
+2. **Login:**
+   - Use registered credentials
+   - Access all scoring features
 
-### Matches
-- `GET /api/matches` - Get all matches
-- `GET /api/matches/live` - Get live matches
-- `GET /api/matches/:id` - Get specific match
-- `POST /api/matches` - Create new match
-- `PUT /api/matches/:id/score` - Update match score
-- `PUT /api/matches/:id/start` - Start match
-- `PUT /api/matches/:id/end` - End match
+3. **Creating Matches:**
+   - Navigate to any sport arena
+   - Enter team/player names when prompted
+   - Configure match settings (halves, quarters, sets, etc.)
+   - Start match and begin scoring
 
-### Tournaments
-- `GET /api/tournaments` - Get all tournaments
-- `GET /api/tournaments/:id` - Get specific tournament
-- `POST /api/tournaments` - Create tournament
-- `POST /api/tournaments/:id/teams` - Add team to tournament
-- `POST /api/tournaments/:id/generate-matches` - Generate matches
+### For Normal Users
 
-### Teams
-- `GET /api/teams` - Get all teams
-- `POST /api/teams` - Create team
-- `PUT /api/teams/:id` - Update team
-- `DELETE /api/teams/:id` - Delete team
+1. **View Live Scores:**
+   - No login required
+   - Visit `/live-scores` to see active matches
+   - Real-time updates every second
 
-## 🔄 Real-time Features
+2. **View Match History:**
+   - No login required
+   - Visit `/history` to see completed matches
+   - View detailed scores and results
 
-### Socket.io Events
-- `join-match` - Join a specific match room
-- `leave-match` - Leave a match room
-- `join-live-scoreboard` - Join live scoreboard room
-- `score-update` - Real-time score updates
-- `match-started` - Match start notifications
-- `match-ended` - Match end notifications
+## 🏅 Sport-Specific Rules
 
-## 🎨 Design Features
+### Football
+- **Scoring:** Goals
+- **Timer:** Customizable halves with auto-start
+- **Winning:** Most goals at end of time
+- **Settings:** Number of halves, time per half
 
-- **Responsive Design**: Works on desktop, tablet, and mobile
-- **Modern UI**: Glassmorphism design with gradients
-- **Smooth Animations**: Framer Motion for fluid transitions
-- **Real-time Indicators**: Live status indicators and connection status
-- **Sport-specific Theming**: Each sport has its own color scheme
+### Basketball
+- **Scoring:** Points (2-pointers, 3-pointers, free throws)
+- **Timer:** Quarters with auto-start
+- **Winning:** Most points at end of time
+- **Settings:** Number of quarters, time per quarter
 
-## 🧪 Testing
+### Cricket
+- **Scoring:** Runs, wickets, overs, extras
+- **Winning:** Most runs or target achieved
+- **Features:** Undo last ball functionality
+- **Settings:** Overs per innings
 
-### Backend Testing
-```bash
-cd server
-npm test
-```
+### Chess
+- **Timer:** Customizable time control
+- **Winning:** Checkmate, time forfeit, resignation
+- **Features:** Manual match ending
+- **Settings:** Time per player
 
-### Frontend Testing
-```bash
-cd client
-npm test
-```
+### Volleyball
+- **Scoring:** Points per set
+- **Winning:** Win majority of sets (e.g., 2 out of 3, 3 out of 5)
+- **Settings:** Number of sets, points per set
+- **Features:** Detailed set scores in history
 
-## 📱 Mobile Support
+### Badminton
+- **Scoring:** Points per game
+- **Winning:** Win majority of games (e.g., 2 out of 3, 3 out of 5)
+- **Settings:** Number of games, points per game
+- **Features:** Detailed game scores in history
 
-The application is fully responsive and optimized for mobile devices:
-- Touch-friendly controls
-- Responsive grid layouts
-- Mobile-optimized navigation
-- Swipe gestures support
+### Table Tennis
+- **Scoring:** Points per game
+- **Winning:** Win majority of games (e.g., 2 out of 3, 3 out of 5)
+- **Settings:** Number of games, points per game
+- **Features:** Detailed game scores in history
+
+## 🔧 Technical Details
+
+### Backend Architecture
+- **Framework:** Node.js with Express
+- **Database:** MongoDB with Mongoose ODM
+- **Authentication:** JWT tokens with bcrypt hashing
+- **Real-time:** Socket.IO for live updates
+- **API:** RESTful endpoints for all operations
+
+### Frontend Architecture
+- **Framework:** React with TypeScript
+- **Routing:** React Router for navigation
+- **State Management:** React Context API
+- **Styling:** CSS with responsive design
+- **Animations:** Framer Motion for smooth transitions
+
+### Database Schema
+- **Users:** username, email, password, role, timestamps
+- **Matches:** sport, teams/players, scores, settings, status, timestamps
+- **Scores:** Sport-specific scoring structures with detailed tracking
+
+## 📱 User Interface
+
+### Navigation
+- **Home Page:** Sport selection with arena cards
+- **Live Scores:** Real-time match updates
+- **History:** Completed matches with detailed scores
+- **Login/Register:** User authentication
+- **Arena Pages:** Sport-specific scoring interfaces
+
+### Responsive Design
+- **Mobile-friendly** interface
+- **Tablet optimization**
+- **Desktop experience**
+- **Touch-friendly** controls
 
 ## 🔒 Security Features
 
-- JWT-based authentication
-- Password hashing with bcrypt
-- Input validation and sanitization
-- CORS configuration
-- Helmet.js security headers
+### Authentication
+- **JWT tokens** for session management
+- **Password hashing** with bcrypt
+- **Token expiration** handling
+- **Automatic logout** on token expiry
+
+### Authorization
+- **Role-based access** control
+- **Protected routes** for sensitive operations
+- **Admin-only** features
+- **Scorer-only** match creation
+
+### Data Protection
+- **Input validation** on all forms
+- **SQL injection** prevention
+- **XSS protection** with proper escaping
+- **Secure password** requirements
 
 ## 🚀 Deployment
 
-### Backend Deployment
-1. Set up MongoDB Atlas or local MongoDB
-2. Configure environment variables
-3. Deploy to platforms like Heroku, Railway, or DigitalOcean
+### Environment Variables
+Create `.env` file in server directory:
+```
+PORT=5000
+MONGODB_URI=mongodb://localhost:27017/sports_arena
+JWT_SECRET=your_jwt_secret_key
+```
 
-### Frontend Deployment
-1. Build the React app: `npm run build`
-2. Deploy to platforms like Vercel, Netlify, or AWS S3
+### Production Build
+```bash
+# Build client
+cd client
+npm run build
+
+# Serve with Express
+cd ../server
+# Serve static files from client/build
+```
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+1. **MongoDB Connection Error**
+   - Ensure MongoDB is running
+   - Check connection string
+   - Verify database permissions
+
+2. **Authentication Issues**
+   - Clear browser localStorage
+   - Check JWT token expiration
+   - Verify user credentials
+
+3. **Real-time Updates Not Working**
+   - Check Socket.IO connection
+   - Verify server is running
+   - Check network connectivity
+
+4. **Match Creation Fails**
+   - Ensure user is logged in as scorer/admin
+   - Check team/player name requirements
+   - Verify match settings are valid
+
+### Debug Mode
+Enable debug logging by setting `NODE_ENV=development` in server environment.
+
+## 📊 API Endpoints
+
+### Authentication
+- `POST /api/users/register` - Register new user
+- `POST /api/users/login` - User login
+- `GET /api/users/profile` - Get user profile
+- `PUT /api/users/profile` - Update user profile
+
+### Matches
+- `GET /api/matches/live` - Get live matches
+- `GET /api/matches/history` - Get match history
+- `POST /api/matches` - Create new match
+- `PUT /api/matches/:id` - Update match score
+- `DELETE /api/matches/:id` - Delete match
+- `POST /api/matches/:id/end` - End match manually
+
+### Sports-Specific
+- `PUT /api/matches/:id/football` - Update football score
+- `PUT /api/matches/:id/basketball` - Update basketball score
+- `PUT /api/matches/:id/cricket` - Update cricket score
+- `PUT /api/matches/:id/chess` - Update chess score
+- `PUT /api/matches/:id/volleyball` - Update volleyball score
+- `PUT /api/matches/:id/badminton` - Update badminton score
+- `PUT /api/matches/:id/table-tennis` - Update table tennis score
 
 ## 🤝 Contributing
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Add tests if applicable
+4. Test thoroughly
 5. Submit a pull request
 
 ## 📄 License
 
 This project is licensed under the MIT License.
 
-## 👨‍💻 Developer
+## 🆘 Support
 
-**Ishan Ganguly**
-- Batch of '28 SST
-- Scaler School of Technology
-
-## 🙏 Acknowledgments
-
-- Built as part of Buildspace N&W's S5 project
-- MERN Course project
-- Scaler School of Technology
-
-## 📞 Support
-
-If you find any issues, please contact the developer or create an issue in the repository.
+For support and questions:
+- Check the troubleshooting section
+- Review the API documentation
+- Contact the development team
 
 ---
 
-**Sports Arena** - Your ultimate destination for live sports scoring and player statistics! 🏆
-
+**Sports Arena Management System** - Bringing sports scoring into the digital age! 🏆

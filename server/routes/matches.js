@@ -7,9 +7,11 @@ const {
   createMatch,
   updateMatchScore,
   startMatch,
-  endMatch
+  endMatch,
+  deleteMatch,
+  undoLastBall
 } = require('../controllers/matchController');
-const auth = require('../middleware/auth');
+const { verifyToken, getUserFromToken } = require('../middleware/auth');
 
 // Public routes
 router.get('/', getMatches);
@@ -21,6 +23,8 @@ router.post('/', createMatch);
 router.put('/:id/score', updateMatchScore);
 router.put('/:id/start', startMatch);
 router.put('/:id/end', endMatch);
+router.post('/:id/undo', undoLastBall);
+router.delete('/:id', deleteMatch);
 
 // Clear all matches (for debugging)
 router.delete('/clear', async (req, res) => {

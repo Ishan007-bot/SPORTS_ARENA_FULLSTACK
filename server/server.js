@@ -14,12 +14,13 @@ const errorHandler = require('./middleware/errorHandler');
 const matchRoutes = require('./routes/matches');
 const tournamentRoutes = require('./routes/tournaments');
 const teamRoutes = require('./routes/teams');
+const userRoutes = require('./routes/users');
 
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    origin: true,
     methods: ["GET", "POST"]
   }
 });
@@ -32,7 +33,7 @@ app.use(helmet());
 app.use(compression());
 app.use(morgan('combined'));
 app.use(cors({
-  origin: process.env.CLIENT_URL || "http://localhost:3000",
+  origin: true,
   credentials: true
 }));
 app.use(express.json({ limit: '10mb' }));
@@ -42,6 +43,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/matches', matchRoutes);
 app.use('/api/tournaments', tournamentRoutes);
 app.use('/api/teams', teamRoutes);
+app.use('/api/users', userRoutes);
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

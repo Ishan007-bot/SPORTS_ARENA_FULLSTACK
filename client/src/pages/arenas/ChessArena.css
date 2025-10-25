@@ -266,6 +266,16 @@
   box-shadow: 0 8px 15px rgba(39, 174, 96, 0.3);
 }
 
+.action-btn.end {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+  color: #fff;
+}
+
+.action-btn.end:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 15px rgba(231, 76, 60, 0.3);
+}
+
 @keyframes pulse {
   0% {
     opacity: 1;
@@ -334,5 +344,257 @@
     padding: 10px 20px;
     font-size: 0.9rem;
   }
+}
+
+/* Chess Controls */
+.chess-controls {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(142, 68, 173, 0.3);
+  border-radius: 15px;
+  padding: 2rem;
+  margin: 2rem 0;
+  backdrop-filter: blur(10px);
+}
+
+.controls-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.controls-header h3 {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.settings-btn {
+  background: linear-gradient(135deg, #8e44ad, #3498db);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.settings-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(142, 68, 173, 0.4);
+}
+
+.match-info-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.time-control-info, .increment-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.time-label, .increment-label {
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: 600;
+}
+
+.time-value, .increment-value {
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Match completion banner */
+.match-completion-banner {
+  background: linear-gradient(135deg, #8e44ad 0%, #2c3e50 100%);
+  border: 2px solid rgba(255, 215, 0, 0.3);
+  border-radius: 15px;
+  padding: 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.completion-content {
+  color: #fff;
+}
+
+.completion-title {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: #ffd700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.winner-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.winner-label {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.winner-name {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffd700;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.completion-reason {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  font-style: italic;
+}
+
+.match-status.completed {
+  background: linear-gradient(135deg, #ffd700, #ffed4e);
+  color: #000;
+  font-weight: 700;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .chess-controls {
+    padding: 1.5rem;
+  }
+  
+  .controls-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  
+  .match-info-display {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .completion-title {
+    font-size: 1.5rem;
+  }
+  
+  .winner-info {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .winner-name {
+    font-size: 1.3rem;
+  }
+}
+
+/* Turn Controls */
+.turn-controls {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.turn-controls h4 {
+  color: #fff;
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.switch-btn {
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.switch-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* Chess Timer Display */
+.chess-timer-display {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.timer-section {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.player-timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75rem;
+  border-radius: 8px;
+  min-width: 120px;
+}
+
+.player-timer.white {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #fff;
+}
+
+.player-timer.black {
+  background: rgba(0, 0, 0, 0.3);
+  border: 2px solid #333;
+}
+
+.player-label {
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.time-display {
+  color: #fff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-family: 'Courier New', monospace;
+}
+
+.current-player {
+  text-align: center;
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.5rem;
+  background: rgba(102, 126, 234, 0.2);
+  border-radius: 8px;
 }
 

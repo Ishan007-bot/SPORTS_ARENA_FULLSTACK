@@ -1,0 +1,138 @@
+.timer-container {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(142, 68, 173, 0.3);
+  border-radius: 15px;
+  padding: 1.5rem;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.timer-display {
+  margin-bottom: 1rem;
+}
+
+.timer-time {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  display: block;
+  margin-bottom: 0.5rem;
+  font-family: 'Courier New', monospace;
+}
+
+.timer-status {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.timer-btn {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 120px;
+  justify-content: center;
+}
+
+.timer-btn-start {
+  background: linear-gradient(135deg, #51cf66, #40c057);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(81, 207, 102, 0.3);
+}
+
+.timer-btn-start:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(81, 207, 102, 0.4);
+}
+
+.timer-btn-resume {
+  background: linear-gradient(135deg, #51cf66, #40c057);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(81, 207, 102, 0.3);
+}
+
+.timer-btn-resume:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(81, 207, 102, 0.4);
+}
+
+.timer-btn-pause {
+  background: linear-gradient(135deg, #ffd43b, #fab005);
+  color: #000;
+  box-shadow: 0 4px 15px rgba(255, 212, 59, 0.3);
+}
+
+.timer-btn-pause:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 212, 59, 0.4);
+}
+
+.timer-btn-reset {
+  background: linear-gradient(135deg, #ff6b6b, #fa5252);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+}
+
+.timer-btn-reset:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 107, 107, 0.4);
+}
+
+.timer-btn:active {
+  transform: translateY(0);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .timer-container {
+    padding: 1rem;
+  }
+  
+  .timer-time {
+    font-size: 2rem;
+  }
+  
+  .timer-controls {
+    gap: 0.6rem;
+  }
+  
+  .timer-btn {
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
+    min-width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .timer-time {
+    font-size: 1.8rem;
+  }
+  
+  .timer-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .timer-btn {
+    width: 100%;
+    max-width: 200px;
+  }
+}

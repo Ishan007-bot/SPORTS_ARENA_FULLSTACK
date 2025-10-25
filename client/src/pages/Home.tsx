@@ -7,12 +7,6 @@ import './Home.css';
 const Home: React.FC = () => {
   const sports = [
     {
-      id: 'cricket',
-      name: 'Cricket',
-      description: 'Live cricket scoring and player statistics',
-      icon: '/cricket-icon.png'
-    },
-    {
       id: 'football',
       name: 'Football',
       description: 'Real-time football match updates',
@@ -41,6 +35,12 @@ const Home: React.FC = () => {
       name: 'Chess',
       description: 'Chess tournament scoring and rankings',
       icon: '/chess-icon.png'
+    },
+    {
+      id: 'cricket',
+      name: 'Cricket',
+      description: 'Live cricket scoring and player statistics',
+      icon: '/cricket-icon.png'
     },
     {
       id: 'badminton',

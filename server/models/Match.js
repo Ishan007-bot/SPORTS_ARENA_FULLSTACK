@@ -74,7 +74,11 @@ const volleyballScoreSchema = new mongoose.Schema({
     sets: { type: Number, default: 0 } 
   },
   currentSet: { type: Number, default: 1 },
-  serving: { type: String, enum: ['teamA', 'teamB'], default: 'teamA' }
+  serving: { type: String, enum: ['teamA', 'teamB'], default: 'teamA' },
+  setScores: [{ 
+    teamA: { type: Number, default: 0 }, 
+    teamB: { type: Number, default: 0 } 
+  }] // Store individual set scores
 });
 
 const badmintonScoreSchema = new mongoose.Schema({
@@ -87,7 +91,11 @@ const badmintonScoreSchema = new mongoose.Schema({
     games: { type: Number, default: 0 } 
   },
   currentGame: { type: Number, default: 1 },
-  serving: { type: String, enum: ['playerA', 'playerB'], default: 'playerA' }
+  serving: { type: String, enum: ['playerA', 'playerB'], default: 'playerA' },
+  gameScores: [{ 
+    playerA: { type: Number, default: 0 }, 
+    playerB: { type: Number, default: 0 } 
+  }] // Store individual game scores
 });
 
 const tableTennisScoreSchema = new mongoose.Schema({
@@ -100,7 +108,11 @@ const tableTennisScoreSchema = new mongoose.Schema({
     games: { type: Number, default: 0 } 
   },
   currentGame: { type: Number, default: 1 },
-  serving: { type: String, enum: ['playerA', 'playerB'], default: 'playerA' }
+  serving: { type: String, enum: ['playerA', 'playerB'], default: 'playerA' },
+  gameScores: [{ 
+    playerA: { type: Number, default: 0 }, 
+    playerB: { type: Number, default: 0 } 
+  }] // Store individual game scores
 });
 
 const matchSchema = new mongoose.Schema({
@@ -145,10 +157,21 @@ const matchSchema = new mongoose.Schema({
   volleyballScore: volleyballScoreSchema,
   badmintonScore: badmintonScoreSchema,
   tableTennisScore: tableTennisScoreSchema,
+  // Match settings
+  matchSettings: {
+    type: mongoose.Schema.Types.Mixed,
+    default: {}
+  },
   // General match info
   winner: {
     type: String,
     enum: ['teamA', 'teamB', 'draw']
+  },
+  winningReason: {
+    type: String
+  },
+  completedAt: {
+    type: Date
   },
   createdBy: {
     type: String,

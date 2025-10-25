@@ -363,3 +363,67 @@
     font-size: 1.3rem;
   }
 }
+
+/* Match Timer */
+.match-timer {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 0.8rem;
+  margin: 0.5rem 0;
+  border: 1px solid rgba(142, 68, 173, 0.3);
+}
+
+.timer-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.timer-label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.timer-value {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffd700;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.period-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.period-label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.period-value {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .match-timer {
+    padding: 0.6rem;
+  }
+  
+  .timer-value {
+    font-size: 1rem;
+  }
+  
+  .period-value {
+    font-size: 0.8rem;
+  }
+}
