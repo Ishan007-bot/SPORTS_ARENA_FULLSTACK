@@ -44,6 +44,10 @@ A comprehensive web application for managing live sports scoring across multiple
 
 ## 🚀 Getting Started
 
+### 🌐 Live Demo
+- **Frontend**: [https://sports-arena-frontend.vercel.app/](https://sports-arena-frontend.vercel.app/)
+- **Backend API**: [https://sports-arena-backend.onrender.com](https://sports-arena-backend.onrender.com)
+
 ### Prerequisites
 - Node.js (v14 or higher)
 - MongoDB (running on localhost:27017)
@@ -83,19 +87,16 @@ A comprehensive web application for managing live sports scoring across multiple
 
 6. **Start the application**
    
-   **Terminal 1 - Backend Server:**
-   ```bash
-   cd server
-   npm start
-   ```
-   Server runs on `http://localhost:5000`
+   **Backend Server (Deployed):**
+   Backend is deployed at `https://sports-arena-backend.onrender.com`
 
-   **Terminal 2 - Frontend Client:**
-   ```bash
-   cd client
-   npm start
-   ```
-   Client runs on `http://localhost:3000`
+   **Frontend Client:**
+   - **Production**: Visit [https://sports-arena-frontend.vercel.app/](https://sports-arena-frontend.vercel.app/)
+   - **Development**: 
+     ```bash
+     cd client
+     npm start
+     ```
 
 ## 🎯 User Guide
 
@@ -289,6 +290,8 @@ cd ../server
 Enable debug logging by setting `NODE_ENV=development` in server environment.
 
 ## 📊 API Endpoints
+
+**Base URL:** `https://sports-arena-backend.onrender.com`
 
 ### Authentication
 - `POST /api/users/register` - Register new user
